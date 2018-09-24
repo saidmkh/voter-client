@@ -1,17 +1,16 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-import InputLabel from '@material-ui/core/InputLabel'
+import Grid from '@material-ui/core/Grid'
 // core components
 import GridItem from 'components/Grid/GridItem.jsx'
-import GridContainer from 'components/Grid/GridContainer.jsx'
 import CustomInput from 'components/CustomInput/CustomInput.jsx'
 import Button from 'components/CustomButtons/Button.jsx'
 import Card from 'components/Card/Card.jsx'
 import CardHeader from 'components/Card/CardHeader.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
 import CardFooter from 'components/Card/CardFooter.jsx'
-import Table from 'components/Table/Table.jsx'
 
 const styles = {
 	cardCategoryWhite: {
@@ -32,47 +31,61 @@ const styles = {
 	}
 }
 
-function CreatePoll(props) {
+function SignIn(props) {
 	const { classes } = props
 	return (
 		<div>
-			<GridContainer>
-				<GridItem xs={12} sm={12} md={12}>
+			<Grid container>
+				<GridItem xs={12} sm={12} md={8}>
 					<Card>
 						<CardHeader color="primary">
-							<h4 className={classes.cardTitleWhite}>Create new poll</h4>
+							<h4 className={classes.cardTitleWhite}>Sign into Voter App</h4>
 							<p className={classes.cardCategoryWhite}>
-								Please, added your question and answersfor polling
+								Please, enter your email and password
 							</p>
 						</CardHeader>
 						<CardBody>
-							<GridContainer>
-								<GridItem xs={12} sm={12} md={12}>
+							<Grid container>
+								<GridItem xs={12} sm={12} md={6}>
 									<CustomInput
-										labelText="Question"
-										id="question"
+										labelText="Email address"
+										id="email_address"
 										formControlProps={{
 											fullWidth: true
 										}}
 									/>
-									<Table
-										tableData={Array.from(Array(5).keys()).map(idx => [
-											<div color="secondary" fullWidth align="left">
-												{`This is the Answer ${idx + 1} for the Question`}
-											</div>
-										])}
+								</GridItem>
+							</Grid>
+							<Grid container>
+								<GridItem xs={12} sm={12} md={6}>
+									<CustomInput
+										labelText="Password"
+										id="password"
+										formControlProps={{
+											fullWidth: true
+										}}
+										inputProps={{ type: 'password' }}
 									/>
 								</GridItem>
-							</GridContainer>
+							</Grid>
 						</CardBody>
 						<CardFooter>
-							<Button color="primary">Add answer</Button>
+							<Grid container>
+								<GridItem xs={12} sm={12} md={12}>
+									<Button color="primary">Sign up</Button>
+								</GridItem>
+								<GridItem xs={12} sm={12} md={12}>
+									<Link color="secondary" to="/signin">
+										already have an account? sign-in
+									</Link>
+								</GridItem>
+							</Grid>
 						</CardFooter>
 					</Card>
 				</GridItem>
-			</GridContainer>
+			</Grid>
 		</div>
 	)
 }
 
-export default withStyles(styles)(CreatePoll)
+export default withStyles(styles)(SignIn)
