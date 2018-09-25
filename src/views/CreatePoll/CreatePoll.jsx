@@ -4,7 +4,10 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Cancel from '@material-ui/icons/Cancel'
-import InputLabel from '@material-ui/core/InputLabel'
+import Done from '@material-ui/icons/Done'
+import Modal from '@material-ui/core/Modal'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 // core components
 import GridItem from 'components/Grid/GridItem.jsx'
 import GridContainer from 'components/Grid/GridContainer.jsx'
@@ -16,7 +19,7 @@ import CardBody from 'components/Card/CardBody.jsx'
 import CardFooter from 'components/Card/CardFooter.jsx'
 import Table from 'components/Table/Table.jsx'
 
-const styles = {
+const styles = theme => ({
   cardCategoryWhite: {
     color: 'rgba(255,255,255,.62)',
     margin: '0',
@@ -38,61 +41,115 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     cursor: 'pointer'
+  },
+  paper: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%,-50%)',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   }
-}
+})
 
-function CreatePoll(props) {
-  const { classes } = props
-  return (
-    <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Create new poll</h4>
-              <p className={classes.cardCategoryWhite}>
-                Please, added your question and answersfor polling
-              </p>
-            </CardHeader>
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                  <CustomInput
-                    labelText="Question"
-                    id="question"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                  <Table
-                    tableData={Array.from(Array(5).keys()).map(idx => [
-                      <div className={classes.answerItem} fullWidth>
-                        {`This is the Answer ${idx + 1} for the Question`}
-                        <div>
-                          <Button color="info">
-                            <ArrowUpward />
-                          </Button>
-                          <Button color="info">
-                            <ArrowDownward />
-                          </Button>
-                          <Button color="warning">
-                            <Cancel />
-                          </Button>
+class CreatePoll extends React.Component {
+  state = {
+    open: false
+  }
+
+  handleOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
+
+  render() {
+    const { classes } = this.props
+    return (
+      <div>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="primary">
+                <h4 className={classes.cardTitleWhite}>Create new poll</h4>
+                <p className={classes.cardCategoryWhite}>
+                  Please, added your question and answersfor polling
+                </p>
+              </CardHeader>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <CustomInput
+                      labelText="Question"
+                      id="question"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                    />
+                    <Table
+                      tableData={Array.from(Array(5).keys()).map(idx => [
+                        <div className={classes.answerItem} fullWidth>
+                          <div onClick={this.handleOpen}>
+                            This is the Answer {idx + 1} for the Question
+                            <Modal
+                              open={this.state.open}
+                              onClose={this.handleClose}
+                            >
+                              <div className={classes.paper}>
+                                <Typography variant="title">
+                                  Edit Answer
+                                </Typography>
+                                <TextField
+                                  id="filled-full-width"
+                                  label="Edit answer"
+                                  fullWidth
+                                  margin="normal"
+                                  variant="filled"
+                                  InputLabelProps={{
+                                    shrink: true
+                                  }}
+                                  value="This is the Answer ${idx + 1} for the Question"
+                                />
+                                <Button color="warning">
+                                  <Done />
+                                </Button>
+                              </div>
+                            </Modal>
+                          </div>
+                          <div>
+                            <Button color="info">
+                              <ArrowUpward />
+                            </Button>
+                            <Button color="info">
+                              <ArrowDownward />
+                            </Button>
+                            <Button color="warning">
+                              <Cancel />
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    ])}
-                  />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button color="primary">Add answer</Button>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-    </div>
-  )
+                      ])}
+                    />
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter>
+                <Button color="primary">Add answer</Button>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
+    )
+  }
 }
 
 export default withStyles(styles)(CreatePoll)
