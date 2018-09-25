@@ -26,7 +26,8 @@ const styles = theme => ({
 
 class Dashboard extends React.Component {
   state = {
-    value: 0
+    value: 0,
+    voted_list: 'not_voted'
   }
   handleChange = (event, value) => {
     this.setState({ value })
@@ -35,8 +36,14 @@ class Dashboard extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index })
   }
+
+  handleVoteBtn = e => {
+    this.setState({ voted_list: e.currentTarget.id })
+  }
+
   render() {
     const { classes } = this.props
+    const { voted_list } = this.state
     return (
       <div>
         <Grid container>
@@ -51,23 +58,46 @@ class Dashboard extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Polls</h4>
                 <Grid container>
                   <GridItem xs={6} sm={6} md={6}>
-                    <Button color="primary">Not voted polls</Button>
+                    <Button
+                      id="not_voted"
+                      color="primary"
+                      onClick={this.handleVoteBtn}
+                    >
+                      Not voted polls
+                    </Button>
                   </GridItem>
                   <GridItem xs={6} sm={6} md={6}>
-                    <Button color="disabled">Voted polls</Button>
+                    <Button
+                      id="voted"
+                      color="disabled"
+                      onClick={this.handleVoteBtn}
+                    >
+                      Voted polls
+                    </Button>
                   </GridItem>
                 </Grid>
               </CardHeader>
               <CardBody>
-                <Table
-                  tableHeaderColor="primary"
-                  tableData={Array.from(Array(10).keys()).map(idx => [
-                    <Button color="secondary" fullWidth align="left">
-                      {`This is the Question for poll #${idx +
-                        1}, please answer it`}
-                    </Button>
-                  ])}
-                />
+                {voted_list === 'not_voted' ? (
+                  <Table
+                    tableHeaderColor="primary"
+                    tableData={Array.from(Array(10).keys()).map(idx => [
+                      <Button color="secondary" fullWidth align="left">
+                        {`This is the Question for poll #${idx +
+                          1}, please answer it`}
+                      </Button>
+                    ])}
+                  />
+                ) : (
+                  <Table
+                    tableHeaderColor="primary"
+                    tableData={Array.from(Array(10).keys()).map(idx => [
+                      <Button color="secondary" fullWidth align="left">
+                        {`This is the Question for poll #${idx + 1}`}
+                      </Button>
+                    ])}
+                  />
+                )}
               </CardBody>
             </Card>
           </GridItem>

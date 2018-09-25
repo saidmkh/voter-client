@@ -1,7 +1,5 @@
 // @material-ui/icons
 import Dashboard from '@material-ui/icons/Dashboard'
-// import ContentPaste from "@material-ui/icons/ContentPaste";
-import LibraryBooks from '@material-ui/icons/LibraryBooks'
 import Assignment from '@material-ui/icons/Assignment'
 import Person from '@material-ui/icons/Person'
 // core components/views

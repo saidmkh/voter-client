@@ -1,22 +1,12 @@
 import React from 'react'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
-import ArrowDownward from '@material-ui/icons/ArrowDownward'
-import Cancel from '@material-ui/icons/Cancel'
-import Done from '@material-ui/icons/Done'
-import Modal from '@material-ui/core/Modal'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
 // core components
 import GridItem from 'components/Grid/GridItem.jsx'
 import GridContainer from 'components/Grid/GridContainer.jsx'
-import CustomInput from 'components/CustomInput/CustomInput.jsx'
-import Button from 'components/CustomButtons/Button.jsx'
 import Card from 'components/Card/Card.jsx'
 import CardHeader from 'components/Card/CardHeader.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
-import CardFooter from 'components/Card/CardFooter.jsx'
 import Table from 'components/Table/Table.jsx'
 
 const styles = theme => ({
@@ -48,7 +38,8 @@ const styles = theme => ({
   },
   answerChart: {
     height: '100%',
-    backgroundColor: 'indigo'
+    backgroundColor: 'indigo',
+    borderRadius: '3px'
   }
 })
 
@@ -103,9 +94,6 @@ class Poll extends React.Component {
                   </GridItem>
                 </GridContainer>
               </CardBody>
-              <CardFooter>
-                <Button color="primary">Add answer</Button>
-              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>

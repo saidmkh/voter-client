@@ -59,20 +59,48 @@ const styles = theme => ({
 })
 
 class CreatePoll extends React.Component {
-  state = {
-    open: false
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      edit_modal: false,
+      delete_modal: false,
+      answers: null,
+      question_value: '',
+      answer_value: ''
+    }
   }
 
-  handleOpen = () => {
-    this.setState({ open: true })
+  handleOpen = e => {
+    if (this.id === 'edit_modal') {
+      this.setState({ edit_modal: true })
+      console.log('this id edit')
+    } else if (this.id === 'delete_modal') {
+      this.setState({ delete_modal: true })
+      console.log('this id del')
+    }
   }
 
-  handleClose = () => {
-    this.setState({ open: false })
+  handleClose = e => {
+    e.currentTarget
+    this.setState({ edit_modal: false })
+  }
+
+  handleAddAnswer = e => {
+    e.preventDefault()
+    const { answer_value } = this.state
+    this.props.onAddAnswer({
+      answer_value: ''
+    })
+  }
+  handleAddAnswers = answers => {
+    const nextAnswer = [answers, ...this.state.answers]
+    this.setState({ answers: nextAnswer })
   }
 
   render() {
     const { classes } = this.props
+    const { edit_modal, delete_modal, answers } = this.state
     return (
       <div>
         <GridContainer>
@@ -100,7 +128,8 @@ class CreatePoll extends React.Component {
                           <div onClick={this.handleOpen}>
                             This is the Answer {idx + 1} for the Question
                             <Modal
-                              open={this.state.open}
+                              id="edit_modal"
+                              open={edit_modal}
                               onClose={this.handleClose}
                             >
                               <div className={classes.paper}>
@@ -133,6 +162,31 @@ class CreatePoll extends React.Component {
                             </Button>
                             <Button color="warning">
                               <Cancel />
+                              <Modal
+                                id="delete_modal"
+                                open={delete_modal}
+                                onClose={this.handleClose}
+                              >
+                                <div className={classes.paper}>
+                                  <Typography variant="title">
+                                    Edit Answer
+                                  </Typography>
+                                  <TextField
+                                    id="filled-full-width"
+                                    label="Edit answer"
+                                    fullWidth
+                                    margin="normal"
+                                    variant="filled"
+                                    InputLabelProps={{
+                                      shrink: true
+                                    }}
+                                    value="This is the Answer ${idx + 1} for the Question"
+                                  />
+                                  <Button color="warning">
+                                    <Done />
+                                  </Button>
+                                </div>
+                              </Modal>
                             </Button>
                           </div>
                         </div>
@@ -142,7 +196,9 @@ class CreatePoll extends React.Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary">Add answer</Button>
+                <Button color="primary" onClick={this.handleAddAnswer}>
+                  Add answer
+                </Button>
               </CardFooter>
             </Card>
           </GridItem>
