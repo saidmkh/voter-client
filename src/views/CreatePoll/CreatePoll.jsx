@@ -74,10 +74,8 @@ class CreatePoll extends React.Component {
   handleOpen = e => {
     if (e.target.id === 'edit_modal') {
       this.setState({ edit_modal: true })
-      console.log('this id edit')
     } else if (e.target.id === 'delete_modal') {
       this.setState({ delete_modal: true })
-      console.log('this id del')
     }
   }
 
