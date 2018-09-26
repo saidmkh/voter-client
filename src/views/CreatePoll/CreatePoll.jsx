@@ -72,18 +72,17 @@ class CreatePoll extends React.Component {
   }
 
   handleOpen = e => {
-    if (this.id === 'edit_modal') {
+    if (e.target.id === 'edit_modal') {
       this.setState({ edit_modal: true })
       console.log('this id edit')
-    } else if (this.id === 'delete_modal') {
+    } else if (e.target.id === 'delete_modal') {
       this.setState({ delete_modal: true })
       console.log('this id del')
     }
   }
 
-  handleClose = e => {
-    e.currentTarget
-    this.setState({ edit_modal: false })
+  handleClose = () => {
+    this.setState({ edit_modal: false, delete_modal: false })
   }
 
   handleAddAnswer = e => {
@@ -125,13 +124,9 @@ class CreatePoll extends React.Component {
                     <Table
                       tableData={Array.from(Array(5).keys()).map(idx => [
                         <div className={classes.answerItem} fullWidth>
-                          <div onClick={this.handleOpen}>
+                          <div id="edit_modal" onClick={this.handleOpen}>
                             This is the Answer {idx + 1} for the Question
-                            <Modal
-                              id="edit_modal"
-                              open={edit_modal}
-                              onClose={this.handleClose}
-                            >
+                            <Modal open={edit_modal} onClose={this.handleClose}>
                               <div className={classes.paper}>
                                 <Typography variant="title">
                                   Edit Answer
@@ -147,7 +142,10 @@ class CreatePoll extends React.Component {
                                   }}
                                   value="This is the Answer ${idx + 1} for the Question"
                                 />
-                                <Button color="warning">
+                                <Button
+                                  color="warning"
+                                  onClick={this.handleClose}
+                                >
                                   <Done />
                                 </Button>
                               </div>
@@ -160,29 +158,27 @@ class CreatePoll extends React.Component {
                             <Button color="info">
                               <ArrowDownward />
                             </Button>
-                            <Button color="warning">
+                            <Button
+                              color="warning"
+                              id="delete_modal"
+                              onClick={this.handleOpen}
+                            >
                               <Cancel />
                               <Modal
-                                id="delete_modal"
                                 open={delete_modal}
                                 onClose={this.handleClose}
                               >
                                 <div className={classes.paper}>
                                   <Typography variant="title">
-                                    Edit Answer
+                                    Delete this answer
                                   </Typography>
-                                  <TextField
-                                    id="filled-full-width"
-                                    label="Edit answer"
-                                    fullWidth
-                                    margin="normal"
-                                    variant="filled"
-                                    InputLabelProps={{
-                                      shrink: true
-                                    }}
-                                    value="This is the Answer ${idx + 1} for the Question"
-                                  />
-                                  <Button color="warning">
+                                  <Button
+                                    color="warning"
+                                    onClick={this.handleClose}
+                                  >
+                                    <Cancel />
+                                  </Button>
+                                  <Button color="info">
                                     <Done />
                                   </Button>
                                 </div>

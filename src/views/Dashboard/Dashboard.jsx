@@ -38,7 +38,14 @@ class Dashboard extends React.Component {
   }
 
   handleVoteBtn = e => {
-    this.setState({ voted_list: e.currentTarget.id })
+    if (e.currentTarget.id === 'not_voted') {
+      this.setState({ voted_list: 'not_voted' })
+      console.log(e.currentTarget.id)
+    } else if (e.currentTarget.id === 'voted') {
+      this.setState({ voted_list: 'voted' })
+      console.log(e.currentTarget.id)
+    }
+    console.log(e.currentTarget.id)
   }
 
   render() {
@@ -60,7 +67,9 @@ class Dashboard extends React.Component {
                   <GridItem xs={6} sm={6} md={6}>
                     <Button
                       id="not_voted"
-                      color="primary"
+                      {...({ voted_list } === 'not_voted'
+                        ? (this.color = 'primary')
+                        : (this.color = 'disabled'))}
                       onClick={this.handleVoteBtn}
                     >
                       Not voted polls
@@ -69,7 +78,9 @@ class Dashboard extends React.Component {
                   <GridItem xs={6} sm={6} md={6}>
                     <Button
                       id="voted"
-                      color="disabled"
+                      {...({ voted_list } === 'voted'
+                        ? (this.color = 'primary')
+                        : (this.color = 'disabled'))}
                       onClick={this.handleVoteBtn}
                     >
                       Voted polls
