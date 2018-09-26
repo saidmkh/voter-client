@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
@@ -10,6 +11,7 @@ import CardBody from 'components/Card/CardBody.jsx'
 import Table from 'components/Table/Table.jsx'
 
 import dashboardStyle from 'assets/jss/material-dashboard-react/views/dashboardStyle.jsx'
+import CreatePoll from '../CreatePoll/CreatePoll'
 
 const styles = theme => ({
 	cardCategoryWhite: {
@@ -54,9 +56,11 @@ class Dashboard extends React.Component {
 			<div>
 				<Grid container>
 					<GridItem xs={12} sm={12} md={12}>
-						<Button color="primary" className={classes.addPollBtn}>
-							Add new poll
-						</Button>
+						<Link to="/create-poll/">
+							<Button color="primary" className={classes.addPollBtn}>
+								Add new poll
+							</Button>
+						</Link>
 					</GridItem>
 					<GridItem xs={12} sm={12} md={12}>
 						<Card>
