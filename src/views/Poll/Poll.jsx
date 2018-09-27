@@ -9,7 +9,7 @@ import CardHeader from 'components/Card/CardHeader.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
 import Table from 'components/Table/Table.jsx'
 
-const styles = theme => ({
+const styles = {
   cardCategoryWhite: {
     color: 'rgba(255,255,255,.62)',
     margin: '0',
@@ -41,65 +41,51 @@ const styles = theme => ({
     backgroundColor: 'indigo',
     borderRadius: '3px'
   }
-})
+}
 
-class Poll extends React.Component {
-  state = {
-    open: false
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
-  }
-
-  render() {
-    const { classes } = this.props
-    return (
-      <div>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>This is poll results</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Please, choose your answer if you have not yet
-                </p>
-              </CardHeader>
-              <CardBody>
-                <h4>The Questions is .......?</h4>
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Table
-                      tableData={Array.from(Array(5).keys()).map(idx => [
-                        <div className={classes.answerItem} fullWidth>
-                          This is the Answer {idx + 1} for the Question
-                          <div className={classes.answerItem}>
-                            <span>{idx + 1}</span>
-                            <div className={classes.chartWrapper}>
-                              <div
-                                className={classes.answerChart}
-                                style={{
-                                  width: `${(idx + 1) * 20}%`
-                                }}
-                              />
-                            </div>
+function Poll(props) {
+  const { classes } = props
+  return (
+    <div>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>This is poll results</h4>
+              <p className={classes.cardCategoryWhite}>
+                Please, choose your answer if you have not yet
+              </p>
+            </CardHeader>
+            <CardBody>
+              <h4>The Questions is .......?</h4>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <Table
+                    tableData={Array.from(Array(5).keys()).map(idx => [
+                      <div className={classes.answerItem} fullWidth>
+                        This is the Answer {idx + 1} for the Question
+                        <div className={classes.answerItem}>
+                          <span>{idx + 1}</span>
+                          <div className={classes.chartWrapper}>
+                            <div
+                              className={classes.answerChart}
+                              style={{
+                                width: `${(idx + 1) * 20}%`
+                              }}
+                            />
                           </div>
                         </div>
-                      ])}
-                    />
-                  </GridItem>
-                </GridContainer>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
-    )
-  }
+                      </div>
+                    ])}
+                  />
+                </GridItem>
+              </GridContainer>
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </div>
+  )
 }
 
 export default withStyles(styles)(Poll)

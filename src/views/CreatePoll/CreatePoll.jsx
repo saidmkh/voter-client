@@ -39,8 +39,7 @@ const styles = theme => ({
   answerItem: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    cursor: 'pointer'
+    alignItems: 'center'
   },
   paper: {
     position: 'absolute',
@@ -55,6 +54,9 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
+  },
+  handleModal: {
+    cursor: 'pointer'
   }
 })
 
@@ -122,8 +124,12 @@ class CreatePoll extends React.Component {
                     <Table
                       tableData={Array.from(Array(5).keys()).map(idx => [
                         <div className={classes.answerItem} fullWidth>
-                          <div id="edit_modal" onClick={this.handleOpen}>
-                            This is the Answer {idx + 1} for the Question
+                          <div
+                            className={classes.handleModal}
+                            id="edit_modal"
+                            onClick={this.handleOpen}
+                          >
+                            Click to edit answer #{idx + 1}
                             <Modal open={edit_modal} onClose={this.handleClose}>
                               <div className={classes.paper}>
                                 <Typography variant="title">
@@ -138,12 +144,8 @@ class CreatePoll extends React.Component {
                                   InputLabelProps={{
                                     shrink: true
                                   }}
-                                  value="This is the Answer ${idx + 1} for the Question"
                                 />
-                                <Button
-                                  color="warning"
-                                  onClick={this.handleClose}
-                                >
+                                <Button color="info" onClick={this.handleClose}>
                                   <Done />
                                 </Button>
                               </div>
@@ -167,18 +169,20 @@ class CreatePoll extends React.Component {
                                 onClose={this.handleClose}
                               >
                                 <div className={classes.paper}>
-                                  <Typography variant="title">
+                                  <Typography align="center" variant="title">
                                     Delete this answer
                                   </Typography>
-                                  <Button
-                                    color="warning"
-                                    onClick={this.handleClose}
-                                  >
-                                    <Cancel />
-                                  </Button>
-                                  <Button color="info">
-                                    <Done />
-                                  </Button>
+                                  <div className={classes.answerItem}>
+                                    <Button
+                                      color="warning"
+                                      onClick={this.handleClose}
+                                    >
+                                      <Cancel />
+                                    </Button>
+                                    <Button color="info">
+                                      <Done />
+                                    </Button>
+                                  </div>
                                 </div>
                               </Modal>
                             </Button>
