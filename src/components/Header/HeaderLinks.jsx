@@ -12,6 +12,9 @@ import Poppers from '@material-ui/core/Popper'
 // @material-ui/icons
 import Person from '@material-ui/icons/Person'
 import Button from 'components/CustomButtons/Button.jsx'
+import { connect } from 'react-redux'
+import { logoutDispatch } from '../../actions/login'
+import { withRouter } from 'react-router-dom'
 
 import headerLinksStyle from 'assets/jss/material-dashboard-react/components/headerLinksStyle.jsx'
 
@@ -29,6 +32,12 @@ class HeaderLinks extends React.Component {
   state = {
     open: false
   }
+
+  userLogout(e) {
+    e.preventDefault()
+    this.props.logoutDispatch(this.props.history)
+  }
+
   handleToggle = () => {
     this.setState(state => ({ open: !state.open }))
   }
@@ -44,7 +53,7 @@ class HeaderLinks extends React.Component {
   render() {
     const { classes } = this.props
     const { open } = this.state
-
+    const { isLogged, user } = this.props.auth
     return (
       <div>
         <div className={classes.flexItem}>
@@ -90,7 +99,7 @@ class HeaderLinks extends React.Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList role="menu">
                       <MenuItem
-                        onClick={this.handleClose}
+                        onClick={(this.handleClose, this.onLogout.bind(this))}
                         className={classes.dropdownItem}
                       >
                         Logout
@@ -107,4 +116,11 @@ class HeaderLinks extends React.Component {
   }
 }
 
-export default withStyles(styles)(withStyles(headerLinksStyle)(HeaderLinks))
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(
+  mapStateToProps,
+  { logoutDispatch }
+)(withStyles(headerLinksStyle)(HeaderLinks))
