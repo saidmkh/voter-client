@@ -10,28 +10,7 @@ import SignUp from 'views/SignUp/SignUp.jsx'
 import SignIn from 'views/SignIn/SignIn.jsx'
 import EmailVerify from 'views/EmailVerify/EmailVerify.jsx'
 
-const dashboardRoutes = [
-  {
-    path: '/sign-up',
-    sidebarName: 'Sign up',
-    navbarName: 'Sign up',
-    icon: Person,
-    component: SignUp
-  },
-  {
-    path: '/sign-in',
-    sidebarName: 'Sign in',
-    navbarName: 'Sign in',
-    icon: Person,
-    component: SignIn
-  },
-  {
-    path: '/verify-email',
-    sidebarName: 'Verify email',
-    navbarName: 'Verify email',
-    icon: Person,
-    component: EmailVerify
-  },
+export const dashboardRoutes = [
   {
     path: '/dashboard',
     sidebarName: 'Dashboard',
@@ -53,7 +32,51 @@ const dashboardRoutes = [
     icon: Assignment,
     component: CreatePoll
   },
+  {
+    path: '/sign-up',
+    sidebarName: 'Sign up',
+    navbarName: 'Sign up',
+    icon: Person,
+    component: SignUp
+  },
+  {
+    path: '/sign-in',
+    sidebarName: 'Sign in',
+    navbarName: 'Sign in',
+    icon: Person,
+    component: SignIn
+  },
+  {
+    path: '/verify-email',
+    sidebarName: 'Verify email',
+    navbarName: 'Verify email',
+    icon: Person,
+    component: EmailVerify
+  },
   { redirect: true, path: '/', to: '/dashboard', navbarName: 'Redirect' }
 ]
 
-export default dashboardRoutes
+export const loginRoutes = [
+  {
+    path: '/sign-up',
+    sidebarName: 'Sign up',
+    navbarName: 'Sign up',
+    icon: Person,
+    component: SignUp
+  },
+  {
+    path: '/sign-in',
+    sidebarName: 'Sign in',
+    navbarName: 'Sign in',
+    icon: Person,
+    component: SignIn
+  },
+  {
+    path: '/verify-email',
+    sidebarName: 'Verify email',
+    navbarName: 'Verify email',
+    icon: Person,
+    component: EmailVerify
+  },
+  { redirect: true, path: '/', to: '/sign-in', navbarName: 'Redirect' }
+]

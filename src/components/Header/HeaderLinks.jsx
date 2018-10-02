@@ -99,7 +99,7 @@ class HeaderLinks extends React.Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList role="menu">
                       <MenuItem
-                        onClick={(this.handleClose, this.onLogout.bind(this))}
+                        onClick={(this.handleClose, this.userLogout.bind(this))}
                         className={classes.dropdownItem}
                       >
                         Logout

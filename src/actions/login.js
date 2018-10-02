@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode'
 import { GET_ERRORS, SET_CURRENT_USER } from './constants'
 
 export const registerDispatch = (user, history) => dispatch => {
-  console.log(API)
+  console.log(user)
   API.post('/users/register', user)
     .then(res => history.push('/sign-in'))
     .catch(err => {

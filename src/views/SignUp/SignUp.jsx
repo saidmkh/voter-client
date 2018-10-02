@@ -55,13 +55,13 @@ class SignUp extends React.Component {
     this.formSubmit = this.formSubmit.bind(this)
   }
 
-  inputOnChange(e) {
+  inputOnChange = e => {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.name]: e.target.value
     })
   }
 
-  formSubmit(e) {
+  formSubmit = e => {
     e.preventDefault()
     const user = {
       email: this.state.email,
@@ -109,9 +109,10 @@ class SignUp extends React.Component {
                 <CardBody>
                   <Grid container>
                     <GridItem xs={12} sm={12} md={6}>
-                      <CustomInput
+                      <input
+                        type="text"
                         labelText="Email address"
-                        id="email_address"
+                        name="email"
                         onChange={this.inputOnChange}
                         value={email}
                         formControlProps={{
@@ -125,9 +126,10 @@ class SignUp extends React.Component {
                   </Grid>
                   <Grid container>
                     <GridItem xs={12} sm={12} md={6}>
-                      <CustomInput
+                      <input
+                        type="text"
                         labelText="Password"
-                        id="password"
+                        name="password"
                         onChange={this.inputOnChange}
                         value={password}
                         formControlProps={{
@@ -144,9 +146,10 @@ class SignUp extends React.Component {
                   </Grid>
                   <Grid container>
                     <GridItem xs={12} sm={12} md={6}>
-                      <CustomInput
+                      <input
+                        type="text"
                         labelText="Repeat password"
-                        id="repeat_password"
+                        name="repeat_password"
                         onChange={this.inputOnChange}
                         value={repeat_password}
                         formControlProps={{

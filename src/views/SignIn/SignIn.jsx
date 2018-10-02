@@ -4,6 +4,7 @@ import { withRouter, Link } from 'react-router-dom'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
 // core components
 import GridItem from 'components/Grid/GridItem.jsx'
 import CustomInput from 'components/CustomInput/CustomInput.jsx'
@@ -53,13 +54,13 @@ class SignIn extends React.Component {
     this.formSubmit = this.formSubmit.bind(this)
   }
 
-  inputOnChange(e) {
+  inputOnChange = e => {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.name]: e.target.value
     })
   }
 
-  formSubmit(e) {
+  formSubmit = e => {
     e.preventDefault()
     const user = {
       email: this.state.email,
@@ -94,19 +95,21 @@ class SignIn extends React.Component {
         <Grid container>
           <GridItem xs={12} sm={12} md={8}>
             <Card>
-              <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Sign into Voter App</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Please, enter your email and password
-                </p>
-              </CardHeader>
-              <CardBody>
-                <form onSubmit={this.formSubmit}>
+              <form onSubmit={this.formSubmit}>
+                <CardHeader color="primary">
+                  <h4 className={classes.cardTitleWhite}>
+                    Sign into Voter App
+                  </h4>
+                  <p className={classes.cardCategoryWhite}>
+                    Please, enter your email and password
+                  </p>
+                </CardHeader>
+                <CardBody>
                   <Grid container>
                     <GridItem xs={12} sm={12} md={6}>
                       <CustomInput
                         labelText="Email address"
-                        id="email_address"
+                        name="email"
                         onChange={this.inputOnChange}
                         value={email}
                         formControlProps={{
@@ -122,7 +125,7 @@ class SignIn extends React.Component {
                     <GridItem xs={12} sm={12} md={6}>
                       <CustomInput
                         labelText="Password"
-                        id="password"
+                        name="password"
                         onChange={this.inputOnChange}
                         value={password}
                         formControlProps={{
@@ -137,20 +140,22 @@ class SignIn extends React.Component {
                       )}
                     </GridItem>
                   </Grid>
-                </form>
-              </CardBody>
-              <CardFooter>
-                <Grid container>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Button color="primary">Sign up</Button>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Link color="secondary" to="/sign-up">
-                      first time user? sign-up
-                    </Link>
-                  </GridItem>
-                </Grid>
-              </CardFooter>
+                </CardBody>
+                <CardFooter>
+                  <Grid container>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Button type="submit" color="primary">
+                        Sign up
+                      </Button>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Link color="secondary" to="/sign-up">
+                        first time user? sign-up
+                      </Link>
+                    </GridItem>
+                  </Grid>
+                </CardFooter>
+              </form>
             </Card>
           </GridItem>
         </Grid>
