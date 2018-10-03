@@ -32,27 +32,6 @@ export const dashboardRoutes = [
     icon: Assignment,
     component: CreatePoll
   },
-  {
-    path: '/sign-up',
-    sidebarName: 'Sign up',
-    navbarName: 'Sign up',
-    icon: Person,
-    component: SignUp
-  },
-  {
-    path: '/sign-in',
-    sidebarName: 'Sign in',
-    navbarName: 'Sign in',
-    icon: Person,
-    component: SignIn
-  },
-  {
-    path: '/verify-email',
-    sidebarName: 'Verify email',
-    navbarName: 'Verify email',
-    icon: Person,
-    component: EmailVerify
-  },
   { redirect: true, path: '/', to: '/dashboard', navbarName: 'Redirect' }
 ]
 

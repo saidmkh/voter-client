@@ -20,16 +20,6 @@ import dashboardStyle from 'assets/jss/material-dashboard-react/layouts/dashboar
 import image from 'assets/img/sidebar-2.jpg'
 import logo from 'assets/img/reactlogo.png'
 
-const switchRoutes = (
-  <Switch>
-    {dashboardRoutes.map((prop, key) => {
-      if (prop.redirect)
-        return <Redirect from={prop.path} to={prop.to} key={key} />
-      return <Route path={prop.path} component={prop.component} key={key} />
-    })}
-  </Switch>
-)
-
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -38,6 +28,7 @@ class App extends React.Component {
     }
     this.resizeFunction = this.resizeFunction.bind(this)
   }
+
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen })
   }
@@ -71,7 +62,7 @@ class App extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
-          routes={dashboardRoutes}
+          routes={this.props.isLogged ? dashboardRoutes : loginRoutes}
           logoText={'Votes'}
           logo={logo}
           image={image}
@@ -82,17 +73,85 @@ class App extends React.Component {
         />
         <div className={classes.mainPanel} ref="mainPanel">
           <Header
-            routes={dashboardRoutes}
+            routes={this.props.isLogged ? dashboardRoutes : loginRoutes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
           {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (
             <div className={classes.content}>
-              <div className={classes.container}>{switchRoutes}</div>
+              <div className={classes.container}>
+                {this.props.isLogged ? (
+                  <Switch>
+                    {dashboardRoutes.map((prop, key) => {
+                      if (prop.redirect)
+                        return (
+                          <Redirect from={prop.path} to={prop.to} key={key} />
+                        )
+                      return (
+                        <Route
+                          path={prop.path}
+                          component={prop.component}
+                          key={key}
+                        />
+                      )
+                    })}
+                  </Switch>
+                ) : (
+                  <Switch>
+                    {loginRoutes.map((prop, key) => {
+                      if (prop.redirect)
+                        return (
+                          <Redirect from={prop.path} to={prop.to} key={key} />
+                        )
+                      return (
+                        <Route
+                          path={prop.path}
+                          component={prop.component}
+                          key={key}
+                        />
+                      )
+                    })}
+                  </Switch>
+                )}
+              </div>
             </div>
           ) : (
-            <div className={classes.map}>{switchRoutes}</div>
+            <div className={classes.map}>
+              {this.props.isLogged ? (
+                <Switch>
+                  {dashboardRoutes.map((prop, key) => {
+                    if (prop.redirect)
+                      return (
+                        <Redirect from={prop.path} to={prop.to} key={key} />
+                      )
+                    return (
+                      <Route
+                        path={prop.path}
+                        component={prop.component}
+                        key={key}
+                      />
+                    )
+                  })}
+                </Switch>
+              ) : (
+                <Switch>
+                  {loginRoutes.map((prop, key) => {
+                    if (prop.redirect)
+                      return (
+                        <Redirect from={prop.path} to={prop.to} key={key} />
+                      )
+                    return (
+                      <Route
+                        path={prop.path}
+                        component={prop.component}
+                        key={key}
+                      />
+                    )
+                  })}
+                </Switch>
+              )}
+            </div>
           )}
           {this.getRoute() ? <Footer /> : null}
         </div>

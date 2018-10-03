@@ -14,19 +14,13 @@ import Person from '@material-ui/icons/Person'
 import Button from 'components/CustomButtons/Button.jsx'
 import { connect } from 'react-redux'
 import { logoutDispatch } from '../../actions/login'
-import { withRouter } from 'react-router-dom'
 
 import headerLinksStyle from 'assets/jss/material-dashboard-react/components/headerLinksStyle.jsx'
 
-const styles = theme => ({
-  flexItem: {
-    display: 'flex'
-  },
-  userEmail: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-})
+const userEmail = {
+  display: 'flex',
+  alignItems: 'center'
+}
 
 class HeaderLinks extends React.Component {
   state = {
@@ -51,73 +45,79 @@ class HeaderLinks extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, isLogged, user } = this.props
     const { open } = this.state
-    const { isLogged, user } = this.props.auth
-    return (
-      <div>
-        <div className={classes.flexItem}>
-          <div className={classes.userEmail}>email.example@com.com</div>
-          <Button
-            buttonRef={node => {
-              this.anchorEl = node
-            }}
-            color={window.innerWidth > 959 ? 'transparent' : 'white'}
-            justIcon={window.innerWidth > 959}
-            simple={!(window.innerWidth > 959)}
-            aria-owns={open ? 'menu-list-grow' : null}
-            aria-haspopup="true"
-            onClick={this.handleToggle}
-            className={classes.buttonLink}
-          >
-            <Person className={classes.icons} />
-            <Hidden mdUp implementation="css">
-              <p className={classes.linkText}>Profile</p>
-            </Hidden>
-          </Button>
-          <Poppers
-            open={open}
-            anchorEl={this.anchorEl}
-            transition
-            disablePortal
-            className={
-              classNames({ [classes.popperClose]: !open }) +
-              ' ' +
-              classes.pooperNav
-            }
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list-grow"
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom'
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList role="menu">
-                      <MenuItem
-                        onClick={(this.handleClose, this.userLogout.bind(this))}
-                        className={classes.dropdownItem}
-                      >
-                        Logout
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Poppers>
+    if (isLogged) {
+      return (
+        <div>
+          <div style={userEmail}>
+            <div>{user.email}</div>
+            <Button
+              buttonRef={node => {
+                this.anchorEl = node
+              }}
+              color={window.innerWidth > 959 ? 'transparent' : 'white'}
+              justIcon={window.innerWidth > 959}
+              simple={!(window.innerWidth > 959)}
+              aria-owns={open ? 'menu-list-grow' : null}
+              aria-haspopup="true"
+              onClick={this.handleToggle}
+              className={classes.buttonLink}
+            >
+              <Person className={classes.icons} />
+              <Hidden mdUp implementation="css">
+                <p className={classes.linkText}>Profile</p>
+              </Hidden>
+            </Button>
+            <Poppers
+              open={open}
+              anchorEl={this.anchorEl}
+              transition
+              disablePortal
+              className={
+                classNames({ [classes.popperClose]: !open }) +
+                ' ' +
+                classes.pooperNav
+              }
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom' ? 'center top' : 'center bottom'
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={this.handleClose}>
+                      <MenuList role="menu">
+                        <MenuItem
+                          onClick={
+                            (this.handleClose, this.userLogout.bind(this))
+                          }
+                          className={classes.dropdownItem}
+                        >
+                          Logout
+                        </MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Poppers>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return <div />
+    }
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  isLogged: state.auth.isLogged,
+  user: state.auth.user
 })
 
 export default connect(
