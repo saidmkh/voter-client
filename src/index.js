@@ -16,28 +16,29 @@ import 'assets/css/material-dashboard-react.css?v=1.5.0'
 import indexRoutes from 'routes/index.jsx'
 
 if (localStorage.jwtToken) {
-	setToken(localStorage.jwtToken)
-	const decoded = jwt_decode(localStorage.jwtToken)
-	store.dispatch(setCurrentUser(decoded))
+  setToken(localStorage.jwtToken)
+  const decoded = jwt_decode(localStorage.jwtToken)
+  store.dispatch(setCurrentUser(decoded))
 
-	const currentTime = Date.now() / 1000
-	if (decoded.exp < currentTime) {
-		store.dispatch(logoutDispatch())
-		window.location.href = '/sign-in'
-	}
+  const currentTime = Date.now() / 1000
+
+  if (decoded.exp < currentTime) {
+    store.dispatch(logoutDispatch())
+    window.location.href = '/sign-in'
+  }
 }
 
 const hist = createBrowserHistory()
 
 ReactDOM.render(
-	<Provider store={store}>
-		<Router history={hist}>
-			<Switch>
-				{indexRoutes.map((prop, key) => {
-					return <Route path={prop.path} component={prop.component} key={key} />
-				})}
-			</Switch>
-		</Router>
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={store}>
+    <Router history={hist}>
+      <Switch>
+        {indexRoutes.map((prop, key) => {
+          return <Route path={prop.path} component={prop.component} key={key} />
+        })}
+      </Switch>
+    </Router>
+  </Provider>,
+  document.getElementById('root')
 )

@@ -1,15 +1,15 @@
-import { GET_POLLS } from '../actions/constants'
+import { SET_POLLS } from '../actions/constants'
 
 const initialState = {
-  polls: []
+  setPolls: []
 }
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_POLLS:
+    case SET_POLLS:
       return {
         ...state,
-        polls: action.payload
+        setPolls: action.payload
       }
     default:
       return state

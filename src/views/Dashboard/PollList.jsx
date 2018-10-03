@@ -16,7 +16,8 @@ const styles = theme => ({
   pollsItem: {
     display: 'flex',
     justifyContent: 'center',
-    color: 'black'
+    color: 'black',
+    overflow: 'hidden'
   }
 })
 

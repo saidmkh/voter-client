@@ -16,6 +16,7 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import dashboardStyle from 'assets/jss/material-dashboard-react/views/dashboardStyle.jsx'
 import CreatePoll from '../CreatePoll/CreatePoll'
 import PollList from './PollList'
+import { setPollsDispatch } from '../../actions/polls'
 
 const styles = theme => ({
   cardCategoryWhite: {
@@ -37,6 +38,7 @@ class Dashboard extends React.Component {
       polls: [],
       value: 0,
       voted_list: 'not_voted',
+      setPolls: [],
       isLoading: true
     }
 
@@ -57,12 +59,23 @@ class Dashboard extends React.Component {
     } else if (e.currentTarget.id === 'voted') {
       this.setState({ voted_list: 'voted' })
     }
-    console.log(e.currentTarget.id)
-    console.log(this.state.voted_list)
+    this.getFilterPolls()
   }
 
-  getAllPolls(polls) {
-    API.get('/questions', polls).then(res =>
+  getFilterPolls() {
+    API.get(`/users/${this.props.user.id}`)
+      .then(res => {
+        console.log(res.data)
+        for (let i = 0; i < res.data.length; i++) {
+          let filter = res.data[i].question
+          console.log(filter)
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+  getAllPolls() {
+    API.get('/questions').then(res =>
       this.setState({
         polls: res.data,
         isLoading: false
@@ -96,7 +109,7 @@ class Dashboard extends React.Component {
                     <Button
                       id="not_voted"
                       color={
-                        voted_list === 'not_voted' ? 'primary' : 'disabled'
+                        voted_list === 'not_voted' ? 'disabled' : 'primary'
                       }
                       onClick={this.handleVoteBtn}
                     >
@@ -106,7 +119,7 @@ class Dashboard extends React.Component {
                   <GridItem xs={6} sm={6} md={6}>
                     <Button
                       id="voted"
-                      color={voted_list === 'voted' ? 'primary' : 'disabled'}
+                      color={voted_list === 'voted' ? 'disabled' : 'primary'}
                       onClick={this.handleVoteBtn}
                     >
                       Voted polls
@@ -137,7 +150,8 @@ Dashboard.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  polls: state.polls
+  polls: state.polls,
+  user: state.auth.user
 })
 
 export default connect(mapStateToProps)(
