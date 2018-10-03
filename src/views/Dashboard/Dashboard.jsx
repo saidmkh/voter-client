@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import API from 'axios'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -9,11 +10,12 @@ import Button from 'components/CustomButtons/Button.jsx'
 import Card from 'components/Card/Card.jsx'
 import CardHeader from 'components/Card/CardHeader.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
-import Table from 'components/Table/Table.jsx'
+
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 import dashboardStyle from 'assets/jss/material-dashboard-react/views/dashboardStyle.jsx'
 import CreatePoll from '../CreatePoll/CreatePoll'
-import { getPollsDispatch } from '../../actions/polls'
+import PollList from './PollList'
 
 const styles = theme => ({
   cardCategoryWhite: {
@@ -32,10 +34,13 @@ class Dashboard extends React.Component {
   constructor() {
     super()
     this.state = {
-      value: 0,
       polls: [],
-      voted_list: 'not_voted'
+      value: 0,
+      voted_list: 'not_voted',
+      isLoading: true
     }
+
+    this.getAllPolls = this.getAllPolls.bind(this)
   }
 
   handleChange = (event, value) => {
@@ -56,15 +61,22 @@ class Dashboard extends React.Component {
     console.log(this.state.voted_list)
   }
 
+  getAllPolls(polls) {
+    API.get('/questions', polls).then(res =>
+      this.setState({
+        polls: res.data,
+        isLoading: false
+      })
+    )
+  }
+
   componentDidMount() {
-    this.setState({
-      polls: getPollsDispatch
-    })
+    this.getAllPolls()
   }
 
   render() {
     const { classes } = this.props
-    const { voted_list } = this.state
+    const { voted_list, isLoading } = this.state
     return (
       <div>
         <Grid container>
@@ -103,25 +115,12 @@ class Dashboard extends React.Component {
                 </Grid>
               </CardHeader>
               <CardBody>
-                {voted_list === 'not_voted' ? (
-                  <Table
-                    tableHeaderColor="primary"
-                    tableData={Array.from(Array(10).keys()).map(idx => [
-                      <Button color="secondary" fullWidth align="left">
-                        {`This is the Question for poll #${idx +
-                          1}, please answer it`}
-                      </Button>
-                    ])}
-                  />
+                {isLoading ? (
+                  <LinearProgress />
                 ) : (
-                  <Table
-                    tableHeaderColor="primary"
-                    tableData={Array.from(Array(10).keys()).map(idx => [
-                      <Button color="secondary" fullWidth align="left">
-                        {`This is the Question for poll #${idx + 1}`}
-                      </Button>
-                    ])}
-                  />
+                  this.state.polls.map(function(obj, idx) {
+                    return <PollList key={idx} idx={idx} obj={obj} />
+                  })
                 )}
               </CardBody>
             </Card>
@@ -133,14 +132,14 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  polls: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({
   polls: state.polls
 })
 
-export default connect(
-  mapStateToProps,
-  { getPollsDispatch }
-)(withStyles(styles)(withStyles(dashboardStyle)(Dashboard)))
+export default connect(mapStateToProps)(
+  withStyles(styles)(withStyles(dashboardStyle)(Dashboard))
+)
