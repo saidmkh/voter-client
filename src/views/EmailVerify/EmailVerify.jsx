@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
 // core components
 import GridItem from 'components/Grid/GridItem.jsx'
 import CustomInput from 'components/CustomInput/CustomInput.jsx'
@@ -31,6 +32,9 @@ const styles = theme => ({
 		fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
 		marginBottom: '3px',
 		textDecoration: 'none'
+	},
+	loginInputBlock: {
+		marginBottom: '20px'
 	}
 })
 
@@ -96,34 +100,30 @@ class EmailVerify extends React.Component {
 									</p>
 								</CardHeader>
 								<CardBody>
-									<Grid container>
+									<Grid container className={classes.loginInputBlock}>
 										<GridItem xs={12} sm={12} md={6}>
-											<input
-												type="text"
-												labelText="Email address"
+											<TextField
+												type="email"
+												label="Email address"
 												id="email_address"
 												name="email"
 												value={email}
 												onChange={this.inputOnChange}
-												formControlProps={{
-													fullWidth: true
-												}}
+												fullWidth
 											/>
 										</GridItem>
 									</Grid>
-									<Grid container>
+									<Grid container className={classes.loginInputBlock}>
 										<GridItem xs={12} sm={12} md={6}>
-											<input
-												type="text"
-												labelText="Verification code"
+											<TextField
+												type="email"
+												label="Verification code"
 												id="verification_code"
 												name="verify_code"
 												value={verify_code}
 												onChange={this.inputOnChange}
-												formControlProps={{
-													fullWidth: true
-												}}
 												inputProps={{ type: 'text' }}
+												fullWidth
 											/>
 										</GridItem>
 									</Grid>

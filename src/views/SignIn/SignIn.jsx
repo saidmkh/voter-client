@@ -39,6 +39,9 @@ const styles = theme => ({
 		marginTop: '10px',
 		fontSize: '12px',
 		backgroundColor: '#ff000029'
+	},
+	loginInputBlock: {
+		marginBottom: '20px'
 	}
 })
 
@@ -105,34 +108,30 @@ class SignIn extends React.Component {
 									</p>
 								</CardHeader>
 								<CardBody>
-									<Grid container>
+									<Grid container className={classes.loginInputBlock}>
 										<GridItem xs={12} sm={12} md={6}>
-											<input
-												type="text"
-												labelText="Email address"
+											<TextField
+												type="email"
+												label="Email address"
 												name="email"
 												onChange={this.inputOnChange}
 												value={email}
-												formControlProps={{
-													fullWidth: true
-												}}
+												fullWidth
 											/>
 											{errors.email && (
 												<div className={classes.errorBlock}>{errors.email}</div>
 											)}
 										</GridItem>
 									</Grid>
-									<Grid container>
+									<Grid container className={classes.loginInputBlock}>
 										<GridItem xs={12} sm={12} md={6}>
-											<input
-												type="text"
-												labelText="Password"
+											<TextField
+												type="password"
+												label="Password"
 												name="password"
 												onChange={this.inputOnChange}
 												value={password}
-												formControlProps={{
-													fullWidth: true
-												}}
+												fullWidth
 												inputProps={{ type: 'password' }}
 											/>
 											{errors.password && (
