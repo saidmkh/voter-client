@@ -16,7 +16,6 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import dashboardStyle from 'assets/jss/material-dashboard-react/views/dashboardStyle.jsx'
 import CreatePoll from '../CreatePoll/CreatePoll'
 import PollList from './PollList'
-import { setPollsDispatch } from '../../actions/polls'
 
 const styles = theme => ({
   cardCategoryWhite: {

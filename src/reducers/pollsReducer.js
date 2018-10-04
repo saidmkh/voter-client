@@ -1,19 +1,15 @@
-import { SET_POLLS } from '../actions/constants'
+import { CURRENT_POLL } from '../actions/constants'
 
 const initialState = {
-  setPolls: []
+  current_poll: {}
 }
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_POLLS:
+    case CURRENT_POLL:
       return {
         ...state,
-        ...{
-          setPolls: state.polls.filter(function(obj) {
-            return obj._id === action.payload
-          })[0]
-        }
+        current_poll: action.payload
       }
     default:
       return state

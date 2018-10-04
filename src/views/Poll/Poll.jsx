@@ -1,4 +1,5 @@
 import React from 'react'
+import API from 'axios'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
 // core components
@@ -8,6 +9,8 @@ import Card from 'components/Card/Card.jsx'
 import CardHeader from 'components/Card/CardHeader.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
 import Table from 'components/Table/Table.jsx'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
 
 const styles = {
   cardCategoryWhite: {
@@ -44,8 +47,37 @@ const styles = {
 }
 
 class Poll extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      answer_text: '',
+      replies: null,
+      answers: [],
+      text: '',
+      current_poll: null
+    }
+
+    this.getPoll = this.getPoll.bind(this)
+  }
+
+  getPoll() {
+    let url = window.location.href.split('/')[4]
+    API.get(`/questions/${url}`).then(res =>
+      this.setState({
+        text: res.data.text,
+        answers: res.data.answers
+      })
+    )
+    console.log(this.state.answers)
+  }
+
+  componentDidMount() {
+    this.getPoll()
+  }
+
   render() {
     const { classes } = this.props
+    const { text, answers, answer_text, answer_replies } = this.state
     return (
       <div>
         <GridContainer>
@@ -58,27 +90,29 @@ class Poll extends React.Component {
                 </p>
               </CardHeader>
               <CardBody>
-                <h4>The Questions is .......?</h4>
+                <h4>{text}</h4>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <Table
-                      tableData={Array.from(Array(5).keys()).map(idx => [
-                        <div className={classes.answerItem} fullWidth>
-                          This is the Answer {idx + 1} for the Question
-                          <div className={classes.answerItem}>
-                            <span>{idx + 1}</span>
-                            <div className={classes.chartWrapper}>
-                              <div
-                                className={classes.answerChart}
-                                style={{
-                                  width: `${(idx + 1) * 20}%`
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ])}
-                    />
+                    {answers.map(function(idx) {
+                      return (
+                        <List key={idx} idx={idx}>
+                          <ListItem className={classes.answerItem} fullWidth>
+                            <ListItem className={classes.answerItem}>
+                              <span>{answers.text}</span>
+                              <div className={classes.chartWrapper}>
+                                {answers.replies}
+                                <div
+                                  className={classes.answerChart}
+                                  style={{
+                                    width: `${{}}%`
+                                  }}
+                                />
+                              </div>
+                            </ListItem>
+                          </ListItem>
+                        </List>
+                      )
+                    })}
                   </GridItem>
                 </GridContainer>
               </CardBody>

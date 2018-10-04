@@ -1,11 +1,11 @@
 import API from 'axios'
-import { SET_POLLS } from './constants'
+import { CURRENT_POLL } from './constants'
 import store from '../store/store'
 
-export const setPollsDispatch = item => dispatch => {
-  API.get(`/users/${this.props.user.id}`)
-    .then(res => {
-      dispatch(res.data)
-    })
-    .catch(err => console.log(err))
+export const currentPollDispatch = poll => dispatch => {
+  console.log(poll)
+  dispatch({
+    type: CURRENT_POLL,
+    payload: poll
+  })
 }
