@@ -9,7 +9,11 @@ export default function(state = initialState, action) {
     case SET_POLLS:
       return {
         ...state,
-        setPolls: action.payload
+        ...{
+          setPolls: state.polls.filter(function(obj) {
+            return obj._id === action.payload
+          })[0]
+        }
       }
     default:
       return state

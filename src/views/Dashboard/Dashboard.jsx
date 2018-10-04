@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
     this.state = {
       polls: [],
       value: 0,
-      voted_list: 'not_voted',
+      voted_list: '',
       setPolls: [],
       isLoading: true
     }
@@ -66,21 +66,21 @@ class Dashboard extends React.Component {
     API.get(`/users/${this.props.user.id}`)
       .then(res => {
         console.log(res.data)
-        for (let i = 0; i < res.data.length; i++) {
-          let filter = res.data[i].question
-          console.log(filter)
-        }
+        this.setState({
+          setPolls: res.data
+        })
       })
       .catch(err => console.log(err))
   }
 
   getAllPolls() {
-    API.get('/questions').then(res =>
+    API.get('/questions').then(res => {
+      console.log(res.data)
       this.setState({
         polls: res.data,
         isLoading: false
       })
-    )
+    })
   }
 
   componentDidMount() {
@@ -89,7 +89,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props
-    const { voted_list, isLoading } = this.state
+    const { voted_list, isLoading, polls, setPolls } = this.state
     return (
       <div>
         <Grid container>
@@ -109,7 +109,7 @@ class Dashboard extends React.Component {
                     <Button
                       id="not_voted"
                       color={
-                        voted_list === 'not_voted' ? 'disabled' : 'primary'
+                        voted_list === 'not_voted' ? 'primary' : 'disabled'
                       }
                       onClick={this.handleVoteBtn}
                     >
@@ -119,7 +119,7 @@ class Dashboard extends React.Component {
                   <GridItem xs={6} sm={6} md={6}>
                     <Button
                       id="voted"
-                      color={voted_list === 'voted' ? 'disabled' : 'primary'}
+                      color={voted_list === 'voted' ? 'primary' : 'disabled'}
                       onClick={this.handleVoteBtn}
                     >
                       Voted polls
@@ -130,10 +130,22 @@ class Dashboard extends React.Component {
               <CardBody>
                 {isLoading ? (
                   <LinearProgress />
+                ) : voted_list === 'voted' ? (
+                  polls
+                    .filter(poll => {
+                      return setPolls.indexOf(poll._id) !== -1
+                    })
+                    .map(function(obj, idx) {
+                      return <PollList key={idx} idx={idx} obj={obj} />
+                    })
                 ) : (
-                  this.state.polls.map(function(obj, idx) {
-                    return <PollList key={idx} idx={idx} obj={obj} />
-                  })
+                  polls
+                    .filter(poll => {
+                      return setPolls.indexOf(poll._id) === -1
+                    })
+                    .map(function(obj, idx) {
+                      return <PollList key={idx} idx={idx} obj={obj} />
+                    })
                 )}
               </CardBody>
             </Card>
@@ -146,7 +158,8 @@ class Dashboard extends React.Component {
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
-  polls: PropTypes.array.isRequired
+  polls: PropTypes.array.isRequired,
+  setPolls: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({
