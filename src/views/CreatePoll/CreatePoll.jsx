@@ -73,6 +73,8 @@ class CreatePoll extends React.Component {
       question_value: '',
       answer_value: 'Click to edit'
     }
+
+    this.handleAddAnswers = this.handleAddAnswers.bind(this)
   }
 
   handleOpen = e => {
@@ -87,23 +89,29 @@ class CreatePoll extends React.Component {
     this.setState({ edit_modal: false, delete_modal: false })
   }
 
-  handleAddAnswer = e => {
-    e.preventDefault()
-    const { answer_value } = this.state
-    this.props.onAddAnswer({
-      answer_value: 'Click to edit'
-    })
-  }
-
   inputOnChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
 
-  handleAddAnswers = answers => {
-    const nextAnswer = [answers, ...this.state.answers]
-    this.setState({ answers: nextAnswer })
+  handleAddAnswers() {
+    this.setState(prevState => {
+      let new_answer = {
+        text: 'click to edit',
+        number: prevState.answers.length
+      }
+      return {
+        answers: [...prevState.answers, new_answer]
+      }
+    })
+  }
+
+  handleDelAnswer() {
+    let del_answer = this.state.answers.slice(-1)
+    this.setState({
+      answers: del_answer
+    })
   }
 
   saveQuestion() {}
@@ -139,19 +147,19 @@ class CreatePoll extends React.Component {
                       onChange={this.inputOnChange}
                       fullWidth
                     />
-                    {answers.map(function(idx) {
+                    {answers.map(function(idx, obj) {
                       return (
-                        <List idx={idx} component="nav">
+                        <List key={idx} idx={idx} component="nav">
                           <ListItem className={classes.answerItem} fullWidth>
                             <div
                               className={classes.handleModal}
                               id="edit_modal"
-                              onClick={this.handleOpen}
+                              onClick={e => this.handleOpen(e)}
                             >
                               {answer_value}
                               <Modal
                                 open={edit_modal}
-                                onClose={this.handleClose}
+                                onClose={e => this.handleClose(e)}
                               >
                                 <div className={classes.paper}>
                                   <Typography variant="title">
@@ -161,7 +169,7 @@ class CreatePoll extends React.Component {
                                     id="filled-full-width"
                                     name="answer_value"
                                     value={answer_value}
-                                    onChange={this.inputOnChange}
+                                    onChange={e => this.inputOnChange(e)}
                                     label="Edit answer"
                                     fullWidth
                                     margin="normal"
@@ -172,7 +180,7 @@ class CreatePoll extends React.Component {
                                   />
                                   <Button
                                     color="info"
-                                    onClick={this.handleClose}
+                                    onClick={e => this.handleClose(e)}
                                   >
                                     <Done />
                                   </Button>
@@ -189,12 +197,12 @@ class CreatePoll extends React.Component {
                               <Button
                                 color="warning"
                                 id="delete_modal"
-                                onClick={this.handleOpen}
+                                onClick={e => this.handleOpen(e)}
                               >
                                 <Cancel />
                                 <Modal
                                   open={delete_modal}
-                                  onClose={this.handleClose}
+                                  onClose={e => this.handleClose(e)}
                                 >
                                   <div className={classes.paper}>
                                     <Typography align="center" variant="title">
@@ -203,7 +211,7 @@ class CreatePoll extends React.Component {
                                     <div className={classes.answerItem}>
                                       <Button
                                         color="warning"
-                                        onClick={this.handleClose}
+                                        onClick={e => this.handleClose(e)}
                                       >
                                         <Cancel />
                                       </Button>
@@ -225,7 +233,7 @@ class CreatePoll extends React.Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary" onClick={this.handleAddAnswer}>
+                <Button color="primary" onClick={this.handleAddAnswers}>
                   Add answer
                 </Button>
                 <Button color="info">Save</Button>
