@@ -17,7 +17,9 @@ import Card from 'components/Card/Card.jsx'
 import CardHeader from 'components/Card/CardHeader.jsx'
 import CardBody from 'components/Card/CardBody.jsx'
 import CardFooter from 'components/Card/CardFooter.jsx'
-import Table from 'components/Table/Table.jsx'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
   cardCategoryWhite: {
@@ -67,9 +69,9 @@ class CreatePoll extends React.Component {
     this.state = {
       edit_modal: false,
       delete_modal: false,
-      answers: null,
+      answers: [],
       question_value: '',
-      answer_value: ''
+      answer_value: 'Click to edit'
     }
   }
 
@@ -89,17 +91,32 @@ class CreatePoll extends React.Component {
     e.preventDefault()
     const { answer_value } = this.state
     this.props.onAddAnswer({
-      answer_value: ''
+      answer_value: 'Click to edit'
     })
   }
+
+  inputOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   handleAddAnswers = answers => {
     const nextAnswer = [answers, ...this.state.answers]
     this.setState({ answers: nextAnswer })
   }
 
+  saveQuestion() {}
+
   render() {
     const { classes } = this.props
-    const { edit_modal, delete_modal, answers } = this.state
+    const {
+      edit_modal,
+      delete_modal,
+      answers,
+      question_value,
+      answer_value
+    } = this.state
     return (
       <div>
         <GridContainer>
@@ -108,88 +125,102 @@ class CreatePoll extends React.Component {
               <CardHeader color="primary">
                 <h4 className={classes.cardTitleWhite}>Create new poll</h4>
                 <p className={classes.cardCategoryWhite}>
-                  Please, added your question and answersfor polling
+                  Please, added your question and answers for polling
                 </p>
               </CardHeader>
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <CustomInput
-                      labelText="Question"
+                    <TextField
+                      label="Question"
+                      name="question_value"
                       id="question"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
+                      value={question_value}
+                      onChange={this.inputOnChange}
+                      fullWidth
                     />
-                    <Table
-                      tableData={Array.from(Array(5).keys()).map(idx => [
-                        <div className={classes.answerItem} fullWidth>
-                          <div
-                            className={classes.handleModal}
-                            id="edit_modal"
-                            onClick={this.handleOpen}
-                          >
-                            Click to edit answer #{idx + 1}
-                            <Modal open={edit_modal} onClose={this.handleClose}>
-                              <div className={classes.paper}>
-                                <Typography variant="title">
-                                  Edit Answer
-                                </Typography>
-                                <TextField
-                                  id="filled-full-width"
-                                  label="Edit answer"
-                                  fullWidth
-                                  margin="normal"
-                                  variant="filled"
-                                  InputLabelProps={{
-                                    shrink: true
-                                  }}
-                                />
-                                <Button color="info" onClick={this.handleClose}>
-                                  <Done />
-                                </Button>
-                              </div>
-                            </Modal>
-                          </div>
-                          <div>
-                            <Button color="info">
-                              <ArrowUpward />
-                            </Button>
-                            <Button color="info">
-                              <ArrowDownward />
-                            </Button>
-                            <Button
-                              color="warning"
-                              id="delete_modal"
+                    {answers.map(function(idx) {
+                      return (
+                        <List idx={idx} component="nav">
+                          <ListItem className={classes.answerItem} fullWidth>
+                            <div
+                              className={classes.handleModal}
+                              id="edit_modal"
                               onClick={this.handleOpen}
                             >
-                              <Cancel />
+                              {answer_value}
                               <Modal
-                                open={delete_modal}
+                                open={edit_modal}
                                 onClose={this.handleClose}
                               >
                                 <div className={classes.paper}>
-                                  <Typography align="center" variant="title">
-                                    Delete this answer
+                                  <Typography variant="title">
+                                    Edit Answer
                                   </Typography>
-                                  <div className={classes.answerItem}>
-                                    <Button
-                                      color="warning"
-                                      onClick={this.handleClose}
-                                    >
-                                      <Cancel />
-                                    </Button>
-                                    <Button color="info">
-                                      <Done />
-                                    </Button>
-                                  </div>
+                                  <TextField
+                                    id="filled-full-width"
+                                    name="answer_value"
+                                    value={answer_value}
+                                    onChange={this.inputOnChange}
+                                    label="Edit answer"
+                                    fullWidth
+                                    margin="normal"
+                                    variant="filled"
+                                    InputLabelProps={{
+                                      shrink: true
+                                    }}
+                                  />
+                                  <Button
+                                    color="info"
+                                    onClick={this.handleClose}
+                                  >
+                                    <Done />
+                                  </Button>
                                 </div>
                               </Modal>
-                            </Button>
-                          </div>
-                        </div>
-                      ])}
-                    />
+                            </div>
+                            <div>
+                              <Button color="info">
+                                <ArrowUpward />
+                              </Button>
+                              <Button color="info">
+                                <ArrowDownward />
+                              </Button>
+                              <Button
+                                color="warning"
+                                id="delete_modal"
+                                onClick={this.handleOpen}
+                              >
+                                <Cancel />
+                                <Modal
+                                  open={delete_modal}
+                                  onClose={this.handleClose}
+                                >
+                                  <div className={classes.paper}>
+                                    <Typography align="center" variant="title">
+                                      Delete this answer
+                                    </Typography>
+                                    <div className={classes.answerItem}>
+                                      <Button
+                                        color="warning"
+                                        onClick={this.handleClose}
+                                      >
+                                        <Cancel />
+                                      </Button>
+                                      <Button color="info">
+                                        <Done />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </Modal>
+                              </Button>
+                            </div>
+                          </ListItem>
+
+                          <Divider />
+                        </List>
+                      )
+                    })}
                   </GridItem>
                 </GridContainer>
               </CardBody>
@@ -197,6 +228,7 @@ class CreatePoll extends React.Component {
                 <Button color="primary" onClick={this.handleAddAnswer}>
                   Add answer
                 </Button>
+                <Button color="info">Save</Button>
               </CardFooter>
             </Card>
           </GridItem>

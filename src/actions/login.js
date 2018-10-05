@@ -7,7 +7,9 @@ import { GET_ERRORS, SET_CURRENT_USER } from './constants'
 export const registerDispatch = (user, history) => dispatch => {
   console.log(user)
   API.post('/users/register', user)
-    .then(res => history.push('/verify-email'))
+    .then(res =>
+      history.push('/verify-email/?=click_link_in_server_console???')
+    )
     .catch(err => {
       dispatch({
         type: GET_ERRORS,
