@@ -11,51 +11,51 @@ import SignIn from 'views/SignIn/SignIn.jsx'
 import EmailVerify from 'views/EmailVerify/EmailVerify.jsx'
 
 export const dashboardRoutes = [
-  {
-    path: '/dashboard',
-    sidebarName: 'Dashboard',
-    navbarName: 'Dashboard',
-    icon: Dashboard,
-    component: DashboardPage
-  },
-  {
-    path: '/poll',
-    sidebarName: 'Poll',
-    navbarName: 'Poll',
-    icon: Assignment,
-    component: Poll
-  },
-  {
-    path: '/create-poll',
-    sidebarName: 'Create poll',
-    navbarName: 'Create poll',
-    icon: Assignment,
-    component: CreatePoll
-  },
-  { redirect: true, path: '/', to: '/dashboard', navbarName: 'Redirect' }
+	{
+		path: '/dashboard',
+		sidebarName: 'Dashboard',
+		navbarName: 'Dashboard',
+		icon: Dashboard,
+		component: DashboardPage
+	},
+	{
+		path: '/poll',
+		sidebarName: 'Poll',
+		navbarName: 'Poll',
+		icon: Assignment,
+		component: Poll
+	},
+	{
+		path: '/create-poll',
+		sidebarName: 'Create poll',
+		navbarName: 'Create poll',
+		icon: Assignment,
+		component: CreatePoll
+	},
+	{ redirect: true, path: '/', to: '/dashboard', navbarName: 'Redirect' }
 ]
 
 export const loginRoutes = [
-  {
-    path: '/sign-up',
-    sidebarName: 'Sign up',
-    navbarName: 'Sign up',
-    icon: Person,
-    component: SignUp
-  },
-  {
-    path: '/sign-in',
-    sidebarName: 'Sign in',
-    navbarName: 'Sign in',
-    icon: Person,
-    component: SignIn
-  },
-  {
-    path: '/verify-email',
-    sidebarName: 'Verify email',
-    navbarName: 'Verify email',
-    icon: Person,
-    component: EmailVerify
-  },
-  { redirect: true, path: '/', to: '/sign-in', navbarName: 'Redirect' }
+	{
+		path: '/sign-up',
+		sidebarName: 'Sign up',
+		navbarName: 'Sign up',
+		icon: Person,
+		component: SignUp
+	},
+	{
+		path: '/sign-in',
+		sidebarName: 'Sign in',
+		navbarName: 'Sign in',
+		icon: Person,
+		component: SignIn
+	},
+	{
+		path: '/verify-email',
+		sidebarName: 'Verify email',
+		navbarName: 'Verify email',
+		icon: Person,
+		component: EmailVerify
+	},
+	{ redirect: true, path: '/', to: '/sign-in', navbarName: 'Redirect' }
 ]

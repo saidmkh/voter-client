@@ -70,14 +70,16 @@ class CreatePoll extends React.Component {
       edit_modal: false,
       delete_modal: false,
       answers: [],
-      question_value: '',
-      answer_value: 'Click to edit'
+      question_value: ''
     }
 
     this.handleAddAnswers = this.handleAddAnswers.bind(this)
+    this.handleOpen = this.handleOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   handleOpen = e => {
+    console.log(e)
     if (e.target.id === 'edit_modal') {
       this.setState({ edit_modal: true })
     } else if (e.target.id === 'delete_modal') {
@@ -114,7 +116,7 @@ class CreatePoll extends React.Component {
     })
   }
 
-  saveQuestion() {}
+  saveQuestion() { }
 
   render() {
     const { classes } = this.props
@@ -123,8 +125,9 @@ class CreatePoll extends React.Component {
       delete_modal,
       answers,
       question_value,
-      answer_value
+      text
     } = this.state
+    let self = this
     return (
       <div>
         <GridContainer>
@@ -147,19 +150,19 @@ class CreatePoll extends React.Component {
                       onChange={this.inputOnChange}
                       fullWidth
                     />
-                    {answers.map(function(idx, obj) {
+                    {answers.map((idx, answer) => {
                       return (
                         <List key={idx} idx={idx} component="nav">
                           <ListItem className={classes.answerItem} fullWidth>
                             <div
                               className={classes.handleModal}
                               id="edit_modal"
-                              onClick={e => this.handleOpen(e)}
+                              onClick={self.handleOpen}
                             >
-                              {answer_value}
+                              {answers.text}
                               <Modal
                                 open={edit_modal}
-                                onClose={e => this.handleClose(e)}
+                                onClose={self.handleClose}
                               >
                                 <div className={classes.paper}>
                                   <Typography variant="title">
@@ -168,8 +171,8 @@ class CreatePoll extends React.Component {
                                   <TextField
                                     id="filled-full-width"
                                     name="answer_value"
-                                    value={answer_value}
-                                    onChange={e => this.inputOnChange(e)}
+                                    value={answers.text}
+                                    onChange={self.inputOnChange}
                                     label="Edit answer"
                                     fullWidth
                                     margin="normal"
@@ -178,9 +181,10 @@ class CreatePoll extends React.Component {
                                       shrink: true
                                     }}
                                   />
+
                                   <Button
                                     color="info"
-                                    onClick={e => this.handleClose(e)}
+                                    onClick={self.handleClose}
                                   >
                                     <Done />
                                   </Button>
@@ -197,12 +201,12 @@ class CreatePoll extends React.Component {
                               <Button
                                 color="warning"
                                 id="delete_modal"
-                                onClick={e => this.handleOpen(e)}
+                                onClick={self.handleOpen}
                               >
                                 <Cancel />
                                 <Modal
                                   open={delete_modal}
-                                  onClose={e => this.handleClose(e)}
+                                  onClose={self.handleClose}
                                 >
                                   <div className={classes.paper}>
                                     <Typography align="center" variant="title">
@@ -211,7 +215,7 @@ class CreatePoll extends React.Component {
                                     <div className={classes.answerItem}>
                                       <Button
                                         color="warning"
-                                        onClick={e => this.handleClose(e)}
+                                        onClick={self.handleClose}
                                       >
                                         <Cancel />
                                       </Button>
