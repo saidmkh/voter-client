@@ -61,7 +61,7 @@ class Poll extends React.Component {
 			replies: null,
 			answers: [],
 			text: '',
-			current_poll: null
+			totalReplies: []
 		}
 
 		this.getPoll = this.getPoll.bind(this)
@@ -71,10 +71,19 @@ class Poll extends React.Component {
 		let url = window.location.href.split('/')[4]
 		API.get(`/questions/${url}`)
 			.then(res => {
-				console.log('answers', res.data.answers)
+				let sumReplies = []
+				for (let i = 0; i < res.data.answers.length; i++) {
+					sumReplies.push(res.data.answers[i].replies)
+				}
+
+				sumReplies = sumReplies.reduce(function(a, b) {
+					return a + b
+				}, 0)
+
 				this.setState({
 					text: res.data.text,
-					answers: res.data.answers
+					answers: res.data.answers,
+					totalReplies: sumReplies
 				})
 			})
 			.catch(err => console.log(err))
@@ -82,29 +91,19 @@ class Poll extends React.Component {
 
 	componentDidMount() {
 		this.getPoll()
-		console.log('dddd', this.props.user)
 	}
 
 	userVote(answer) {
 		let question = window.location.href.split('/')[4]
 		API.put(`users/${this.props.user.id}/question/${question}/answer/${answer}`)
-			.then(res => {
-				console.log('answers', res.data.answers)
-				this.setState({
-					text: res.data.text,
-					answers: res.data.answers
-				})
-			})
-			.catch(err => console.log(err))
-		console.log(answer, this.props.user.id, question)
 	}
 
 	render() {
 		let self = this
-		const { classes } = this.props
-		const { text, answers, answer_text, answer_replies } = this.state
+		const { classes, current_poll } = this.props
+		const { text, answers, totalReplies } = this.state
+		console.log('objecdddt', this.props.user)
 
-		console.log()
 		return (
 			<div>
 				<GridContainer>
@@ -121,7 +120,8 @@ class Poll extends React.Component {
 								<GridContainer>
 									<GridItem xs={12} sm={12} md={12}>
 										{answers.map(function(obj, idx) {
-											console.log(obj)
+											let precent_replies = (obj.replies / totalReplies) * 100
+											console.log(obj.replies, totalReplies)
 											return (
 												<List key={idx} idx={idx} obj={obj}>
 													<ListItem
@@ -129,7 +129,7 @@ class Poll extends React.Component {
 														className={classes.answerItem}
 														fullWidth
 														onClick={() => {
-															self.userVote(obj._id)
+															self.userVote(obj._id), self.forceUpdate()
 														}}
 													>
 														<span>{obj.text}</span>
@@ -141,7 +141,7 @@ class Poll extends React.Component {
 																className={classes.answerChart}
 																style={{
 																	maxWidth: '100%',
-																	width: `${obj.replies}%`
+																	width: `${precent_replies}%`
 																}}
 															/>
 														</div>
@@ -161,8 +161,8 @@ class Poll extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: state.auth.user,
-	current_answer: state.current_answer
+	current_poll: state.current_poll,
+	user: state.auth.user
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(Poll))
