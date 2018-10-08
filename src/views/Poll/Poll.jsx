@@ -96,13 +96,13 @@ class Poll extends React.Component {
 	userVote(answer) {
 		let question = window.location.href.split('/')[4]
 		API.put(`users/${this.props.user.id}/question/${question}/answer/${answer}`)
+		this.props.history.push('/')
 	}
 
 	render() {
 		let self = this
 		const { classes } = this.props
 		const { text, answers, totalReplies } = this.state
-		console.log('objecdddt', this.props.user)
 
 		return (
 			<div>
@@ -121,7 +121,6 @@ class Poll extends React.Component {
 									<GridItem xs={12} sm={12} md={12}>
 										{answers.map(function(obj, idx) {
 											let precent_replies = (obj.replies / totalReplies) * 100
-											console.log(obj.replies, totalReplies)
 											return (
 												<List key={idx} idx={idx} obj={obj}>
 													<ListItem

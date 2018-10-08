@@ -102,19 +102,26 @@ class CreatePoll extends React.Component {
 	}
 
 	handleDelAnswer(idx) {
-		this.state.answers.slice().splice(idx, 1)
+		console.log('dddd', idx)
+		this.state.answers.splice(idx - 1, 1)
+		this.handleClose()
 	}
 
 	handleOpen = (idx, e) => {
-		console.log(this.state.answers, idx)
 		let edit_text = this.state.answers[idx].text
 		let answer_text_index = idx
 
 		this.setState({ edit_modal: true, edit_text, answer_text_index })
 	}
 
+	handleOpenDelModal = (idx, e) => {
+		this.setState({
+			delete_modal: true
+		})
+	}
+
 	handleClose = () => {
-		this.setState({ edit_modal: false, edit_text: '' })
+		this.setState({ edit_modal: false, delete_modal: false, edit_text: '' })
 	}
 
 	saveQuestion() {
@@ -129,7 +136,6 @@ class CreatePoll extends React.Component {
 			question,
 			answers
 		}
-		console.log(Question)
 		API.post(`/questions/`, Question)
 			.then(res => {
 				console.log(res.data)
@@ -175,14 +181,13 @@ class CreatePoll extends React.Component {
 											fullWidth
 										/>
 										{answers.map((obj, idx) => {
-											console.log(obj.text, idx)
 											return (
 												<List key={idx} idx={idx} component="nav">
 													<ListItem className={classes.answerItem} fullWidth>
 														<div className={classes.handleModal}>
 															<span
-																id="edit_modal"
-																onClick={() => self.handleOpen(idx)}
+																name="edit_modal"
+																onClick={e => self.handleOpen(idx)}
 															>
 																{obj.text}
 															</span>
@@ -233,11 +238,11 @@ class CreatePoll extends React.Component {
 															<Button
 																color="warning"
 																name="delete_modal"
-																onClick={self.handleOpen.bind(this, idx)}
+																onClick={e => self.handleOpenDelModal(idx)}
 															>
 																<Cancel />
 																<Modal
-																	name="delete_model"
+																	name="delete_modal"
 																	open={delete_modal}
 																	onClose={self.handleClose}
 																>
@@ -254,9 +259,9 @@ class CreatePoll extends React.Component {
 																			</Button>
 																			<Button
 																				color="info"
-																				onClick={() =>
+																				onClick={() => {
 																					self.handleDelAnswer(idx)
-																				}
+																				}}
 																			>
 																				<Done />
 																			</Button>
