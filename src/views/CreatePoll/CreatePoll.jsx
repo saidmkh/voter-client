@@ -102,7 +102,6 @@ class CreatePoll extends React.Component {
 	}
 
 	handleDelAnswer(idx) {
-		console.log('dddd', idx)
 		this.state.answers.splice(idx - 1, 1)
 		this.handleClose()
 	}
@@ -115,12 +114,12 @@ class CreatePoll extends React.Component {
 	}
 
 	handleOpenDelModal = (idx, e) => {
-		this.setState({
-			delete_modal: true
-		})
+		let answer_text_index = idx
+		this.setState({ delete_modal: true, answer_text_index })
 	}
 
 	handleClose = () => {
+		console.log('close')
 		this.setState({ edit_modal: false, delete_modal: false, edit_text: '' })
 	}
 
@@ -248,18 +247,12 @@ class CreatePoll extends React.Component {
 																>
 																	<div className={classes.paper}>
 																		<Typography align="center" variant="title">
-																			Delete this answer
+																			Delete this answer? PRESS ESCAPE TO CLOSE
 																		</Typography>
 																		<div className={classes.answerItem}>
 																			<Button
-																				color="warning"
-																				onClick={self.handleClose}
-																			>
-																				<Cancel />
-																			</Button>
-																			<Button
 																				color="info"
-																				onClick={() => {
+																				onClick={e => {
 																					self.handleDelAnswer(idx)
 																				}}
 																			>
