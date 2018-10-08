@@ -100,7 +100,7 @@ class Poll extends React.Component {
 
 	render() {
 		let self = this
-		const { classes, current_poll } = this.props
+		const { classes } = this.props
 		const { text, answers, totalReplies } = this.state
 		console.log('objecdddt', this.props.user)
 
@@ -129,7 +129,7 @@ class Poll extends React.Component {
 														className={classes.answerItem}
 														fullWidth
 														onClick={() => {
-															self.userVote(obj._id), self.forceUpdate()
+															self.userVote(obj._id)
 														}}
 													>
 														<span>{obj.text}</span>
