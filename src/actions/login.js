@@ -5,6 +5,7 @@ import { push } from 'react-router-redux'
 import { GET_ERRORS, SET_CURRENT_USER } from './constants'
 
 export const registerDispatch = (user, history) => dispatch => {
+	console.log(user)
 	API.post('/users/register', user)
 		.then(res =>
 			history.push('/verify-email/?=click_link_in_server_console???')
@@ -18,8 +19,10 @@ export const registerDispatch = (user, history) => dispatch => {
 }
 
 export const verifyEmailDispatch = user => dispatch => {
+	console.log(user)
 	API.post('users/verify_email', user)
 		.then(res => {
+			console.log(res.data)
 			const { token } = res.data
 			localStorage.setItem('jwtToken', token)
 			setToken(token)
@@ -38,6 +41,7 @@ export const verifyEmailDispatch = user => dispatch => {
 export const loginDispatch = user => dispatch => {
 	API.post('/users/login', user)
 		.then(res => {
+			console.log(res.data)
 			const { token } = res.data
 			localStorage.setItem('jwtToken', token)
 			setToken(token)
